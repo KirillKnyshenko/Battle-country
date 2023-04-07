@@ -6,6 +6,9 @@ public class Base : MonoBehaviour
     [SerializeField] private LevelManager _levelManager;
     [SerializeField] private PlayerData _data;
     public PlayerData data => _data;
+    [SerializeField] private BaseVisual _baseVisual;
+    public BaseVisual baseVisual => _baseVisual;
+    
     [SerializeField] private float _mass;
     [SerializeField] private GameObject _unitPrefab;
     [SerializeField] private float _spawnUnitsBorder;
@@ -14,7 +17,7 @@ public class Base : MonoBehaviour
         _data = data;
     }
 
-    private void SendUnits(GameObject target) {
+    public void SendUnits(GameObject target) {
         if (target == gameObject) return;
 
         for (int i = 0; i < _mass; i++)
@@ -27,7 +30,22 @@ public class Base : MonoBehaviour
 
             Unit unitSkript = newUnit.GetComponent<Unit>();
 
-            unitSkript.SetTarget(target);
+            unitSkript.SetTarget(target, _data);
+        }
+
+        _mass -= _mass;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        Unit unit = collision.attachedRigidbody.GetComponent<Unit>();
+        
+        if (unit != null)
+        {
+            if (unit.targetObject == gameObject)
+            {
+                _mass++;
+                Destroy(unit.gameObject);
+            }
         }
     }
 }
