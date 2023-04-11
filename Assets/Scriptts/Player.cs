@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IOwner
 {
     [SerializeField] private GameManager _gameManager;
     public GameManager gameManager => _gameManager;
@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private Base _targetBase;
     private Vector3 _targetPosition;
     public void Init() {
-        _data = new PlayerData(1f, 1f, 1f, 1f);
+
     }
 
     private void Update() {
@@ -101,21 +101,20 @@ public class Player : MonoBehaviour
             }
         }
     }
-}
 
+    public PlayerData GetData() {
+        return _data;
+    }
+}
 
 [System.Serializable]
 public class PlayerData 
 {
+    public GameObject owner;
     public float attack;
     public float defense;
     public float speed;
     public float reproductionTime;
-
-    public PlayerData(float attack, float defense, float speed, float reproductionTime) {
-        this.attack = attack;
-        this.defense = defense;
-        this.speed = speed;
-        this.reproductionTime = reproductionTime;
-    }
+    public Color color;
+    public Material lineMaterial;
 }

@@ -8,11 +8,15 @@ public class LevelManager : MonoBehaviour
     public GameManager gameManager => _gameManager;
     [SerializeField] private List<Base> _bases;
     public List<Base> bases => _bases;
-
+    [SerializeField] private List<Base> _playerBases;
+    public List<Base> playerBases => _playerBases;
+    [SerializeField] private List<Base> _enemyBases;
+    public List<Base> enemyBases => _enemyBases;
+    
     public void Init() {
         foreach (var myBase in _bases)
         {
-            myBase.Init(this, _gameManager.player.data);
+            myBase.Init(this);
         }
     }
 }
