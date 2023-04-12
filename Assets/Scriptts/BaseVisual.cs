@@ -15,21 +15,30 @@ public class BaseVisual : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _countText;
 
     public void Init() {
-        _spriteRenderer.color = _base.data.color;
-        float alfaColor = .3f;
-        Color selectedColor = new Color(_base.data.color.r, _base.data.color.g, _base.data.color.b, alfaColor);
-        _selectedSpriteRenderer.color = selectedColor;
-
-        _lineRenderer.material = _base.data.lineMaterial;
-        _arrorSpriteRenderer.material = _base.data.lineMaterial;
+        SetOwnerVisual();
 
         _base.OnDrawLine.AddListener(DrawLine);
         _base.OnClearLine.AddListener(ClearLine);
         _base.OnSelected.AddListener(ShowSelection);
         _base.OnUnselected.AddListener(HideSelection);
         _base.OnMassChanged.AddListener(UpdateVisual);
+        _base.OnOwnerChanged.AddListener(SetOwnerVisual);
+
         HideSelection();
         UpdateVisual();
+    }
+
+    private void SetOwnerVisual() {
+        if (_base.iOwner != null)
+        {
+            _spriteRenderer.color = _base.data.color;
+            float alfaColor = .3f;
+            Color selectedColor = new Color(_base.data.color.r, _base.data.color.g, _base.data.color.b, alfaColor);
+            _selectedSpriteRenderer.color = selectedColor;
+
+            _lineRenderer.material = _base.data.lineMaterial;
+            _arrorSpriteRenderer.material = _base.data.lineMaterial;
+        }
     }
 
     private void UpdateVisual() {

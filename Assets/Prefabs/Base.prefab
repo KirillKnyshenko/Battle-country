@@ -717,20 +717,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ab4d647b9bd984eb688da728d2fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ownerObject: {fileID: 0}
-  OnDrawLine:
-    m_PersistentCalls:
-      m_Calls: []
-  OnClearLine:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSelected:
-    m_PersistentCalls:
-      m_Calls: []
-  OnUnselected:
-    m_PersistentCalls:
-      m_Calls: []
   _levelManager: {fileID: 0}
+  _ownerObject: {fileID: 0}
   _data:
     owner: {fileID: 0}
     attack: 0
@@ -743,6 +731,25 @@ MonoBehaviour:
   _mass: 5
   _unitPrefab: {fileID: 5712927564533267057, guid: 6a51cd539b471344c9d899bfdd80365c, type: 3}
   _spawnUnitsBorder: 1
+  _massMax: 80
+  OnDrawLine:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClearLine:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnselected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMassChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnOwnerChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &7568638690243217639
 Rigidbody2D:
   serializedVersion: 4

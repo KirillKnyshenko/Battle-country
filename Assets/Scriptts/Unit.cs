@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField] private UnitVisual _unitVisual;
     private IOwner _iOwner;
     public IOwner iOwner => _iOwner;
     private PlayerData _data;
+    public PlayerData data => _data;
     private GameObject _targetObject;
     public GameObject targetObject => _targetObject;
     private Vector2 _targetDir;
@@ -17,6 +19,7 @@ public class Unit : MonoBehaviour
         _targetDir = target.transform.position - transform.position;
         _targetDir = _targetDir.normalized;
         _data = _iOwner.GetData();
+        _unitVisual.Init();
     }
 
     private void FixedUpdate() {

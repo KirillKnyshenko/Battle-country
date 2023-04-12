@@ -13,12 +13,7 @@ public class AI : MonoBehaviour, IOwner
     
     public void Init()
     {
-        _bases = _gameManager.levelManager.enemyBases;
         StartCoroutine(Analyze());
-    }
-
-    public PlayerData GetData() {
-        return _data;
     }
 
     private IEnumerator Analyze() {
@@ -30,25 +25,55 @@ public class AI : MonoBehaviour, IOwner
 
             foreach (var myBase in _bases)
             {
-                totalMass += myBase.mass;
+                totalMass = totalMass + myBase.mass;
             }
 
-            var playerBases = _gameManager.levelManager.playerBases;
+            var bases = _gameManager.levelManager.bases;
 
-            foreach (var playerBase in playerBases)
+            foreach (var selectedBase in bases)
             {
-                if (totalMass > playerBase.mass)
+                if (!_bases.Contains(selectedBase))
                 {
-                    Attack(playerBase);
+                    if (totalMass > selectedBase.mass)
+                    {
+                        Attack(selectedBase);
+                    }
                 }
             }
         }
     }
 
     private void Attack(Base targetBase) {
+        float atackMass = 0f;
+        List<Base> atackBases = new List<Base>();
+
+
         foreach (var myBase in _bases)
         {
-            myBase.SendUnits(targetBase.gameObject);
+            atackMass = atackMass + myBase.mass;
+
+            atackBases.Add(myBase);
+            if (atackMass > targetBase.mass)
+            {
+                continue;
+            }
         }
+
+        foreach (var atackBase in atackBases)
+        {
+            atackBase.SendUnits(targetBase.gameObject);
+        }
+    }
+
+    public PlayerData GetData() {
+        return _data;
+    }
+
+    public void AddBase(Base baseArg) {
+        _bases.Add(baseArg);
+    }
+
+    public void RemoveBase(Base baseArg) {
+        _bases.Remove(baseArg);
     }
 }

@@ -18,34 +18,58 @@ public class Base : MonoBehaviour
     public float mass => _mass;
     [SerializeField] private GameObject _unitPrefab;
     [SerializeField] private float _spawnUnitsBorder;
-
+    [SerializeField] private float _massMax;
     public UnityEvent<Vector2> OnDrawLine;
     public UnityEvent OnClearLine;
     public UnityEvent OnSelected;
     public UnityEvent OnUnselected;
     public UnityEvent OnMassChanged;
-
+    public UnityEvent OnOwnerChanged;
     public void Init(LevelManager levelManager) {
         _levelManager = levelManager;
         
-        SetOwner(_ownerObject);
+        if (_ownerObject != null) SetOwner(_ownerObject);
+
+        _baseVisual.Init();
+
+        StartCoroutine(BaseUpdate());
+    }
+
+    private IEnumerator BaseUpdate() {
+        while (true)
+        {
+            if (_iOwner != null && _mass < _massMax) 
+            {
+                _mass++;
+                OnMassChanged?.Invoke();
+                yield return new WaitForSeconds(_data.reproductionTime);
+            }
+
+            yield return null;
+        };
     }
 
     private void SetOwner(GameObject ownerObject) {
+        if (_iOwner != null)
+        {
+            _iOwner.RemoveBase(this);
+        }
+
         _ownerObject = ownerObject;
         _iOwner = ownerObject.GetComponent<IOwner>();
 
         if (_iOwner != null)
         {
             _data = _iOwner.GetData();
-                
+
+            _iOwner.AddBase(this);
+
+            OnOwnerChanged?.Invoke();
         }
         else
         {
             Debug.Log("Owner doesn't have a inteface");
         }
-
-        _baseVisual.Init();
     }
 
     public void SendUnits(GameObject target) {
@@ -64,7 +88,7 @@ public class Base : MonoBehaviour
             unitSkript.SetTarget(target, _iOwner);
         }
 
-        _mass -= _mass;
+        _mass = 0f;
         OnMassChanged?.Invoke();
     }
 
@@ -84,11 +108,10 @@ public class Base : MonoBehaviour
                 {
                     _mass--;
 
-                    if (_mass < 0f)
+                    if (_mass == 0f)
                     {
                         // Change base owner
                         SetOwner(unit.iOwner.GetData().owner);
-                        _mass++;
                     }
                 }
 

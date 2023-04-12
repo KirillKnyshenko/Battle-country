@@ -9,6 +9,7 @@ public class Player : MonoBehaviour, IOwner
     [SerializeField] private PlayerData _data;
     public PlayerData data => _data;
 
+    private List<Base> _bases = new List<Base>();
     private List<Base> _selectedBases = new List<Base>();
     private Base _targetBase;
     private Vector3 _targetPosition;
@@ -104,6 +105,16 @@ public class Player : MonoBehaviour, IOwner
 
     public PlayerData GetData() {
         return _data;
+    }
+
+    public void AddBase(Base baseArg) {
+        _bases.Add(baseArg);
+    }
+
+    public void RemoveBase(Base baseArg) {
+        if (_bases.Contains(baseArg)) {
+            _bases.Remove(baseArg);
+        }
     }
 }
 
