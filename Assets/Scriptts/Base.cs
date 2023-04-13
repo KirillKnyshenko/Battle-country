@@ -7,8 +7,8 @@ public class Base : MonoBehaviour
     [SerializeField] private LevelManager _levelManager;
     public LevelManager levelManager => _levelManager;
     [SerializeField] private GameObject _ownerObject;
-    private IOwner _iOwner;
-    public IOwner iOwner => _iOwner;
+    private IBaseOwner _iOwner;
+    public IBaseOwner iOwner => _iOwner;
     [SerializeField] private PlayerData _data;
     public PlayerData data => _data;
     [SerializeField] private BaseVisual _baseVisual;
@@ -19,12 +19,16 @@ public class Base : MonoBehaviour
     [SerializeField] private GameObject _unitPrefab;
     [SerializeField] private float _spawnUnitsBorder;
     [SerializeField] private float _massMax;
+    public float massMax => _massMax;
+
     public UnityEvent<Vector2> OnDrawLine;
     public UnityEvent OnClearLine;
     public UnityEvent OnSelected;
     public UnityEvent OnUnselected;
     public UnityEvent OnMassChanged;
+    public UnityEvent OnUnitTaken;
     public UnityEvent OnOwnerChanged;
+
     public void Init(LevelManager levelManager) {
         _levelManager = levelManager;
         
@@ -40,8 +44,7 @@ public class Base : MonoBehaviour
         {
             if (_iOwner != null && _mass < _massMax) 
             {
-                _mass++;
-                OnMassChanged?.Invoke();
+                AddMass(1f);
                 yield return new WaitForSeconds(_data.reproductionTime);
             }
 
@@ -56,7 +59,7 @@ public class Base : MonoBehaviour
         }
 
         _ownerObject = ownerObject;
-        _iOwner = ownerObject.GetComponent<IOwner>();
+        _iOwner = ownerObject.GetComponent<IBaseOwner>();
 
         if (_iOwner != null)
         {
@@ -68,7 +71,7 @@ public class Base : MonoBehaviour
         }
         else
         {
-            Debug.Log("Owner doesn't have a inteface");
+            Debug.LogError("Owner doesn't have a inteface");
         }
     }
 
@@ -88,7 +91,16 @@ public class Base : MonoBehaviour
             unitSkript.SetTarget(target, _iOwner);
         }
 
-        _mass = 0f;
+        RemoveMass(_mass);
+    }
+
+    private void AddMass(float massToAdd) {
+        _mass = _mass + massToAdd;
+        OnMassChanged?.Invoke();
+    }
+
+    private void RemoveMass(float massToRemove) {
+        _mass = _mass - massToRemove;
         OnMassChanged?.Invoke();
     }
 
@@ -102,20 +114,23 @@ public class Base : MonoBehaviour
 
                 if (unit.iOwner == _iOwner)
                 {
-                    _mass++;
+                    AddMass(1f);
                 }
                 else
                 {
-                    _mass--;
-
                     if (_mass == 0f)
                     {
                         // Change base owner
                         SetOwner(unit.iOwner.GetData().owner);
+                    } 
+                    else
+                    {
+                        RemoveMass(1f);
                     }
+
                 }
 
-                OnMassChanged?.Invoke();
+                OnUnitTaken?.Invoke();
                 Destroy(unit.gameObject);
             }
         }

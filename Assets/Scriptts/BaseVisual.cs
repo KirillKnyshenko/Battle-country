@@ -4,26 +4,32 @@ using UnityEngine;
 using TMPro;
 public class BaseVisual : MonoBehaviour
 {
+    private static int POPUP = Animator.StringToHash("Popup");
     [SerializeField] private Base _base;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private SpriteRenderer _selectedSpriteRenderer;
-    [SerializeField] private Transform _arrorTransform;
     [SerializeField] private SpriteRenderer _arrorSpriteRenderer;
+    [SerializeField] private SpriteRenderer _fieldSpriteRenderer;
+    [SerializeField] private Transform _arrorTransform;
     [SerializeField] private LineRenderer _lineRenderer;
     [SerializeField] private GameObject _selectedVisual;
     public LineRenderer LineRenderer => _lineRenderer;
     [SerializeField] private TextMeshProUGUI _countText;
+    [SerializeField] private Animator _baseAnimator;
 
     public void Init() {
-        SetOwnerVisual();
-
         _base.OnDrawLine.AddListener(DrawLine);
         _base.OnClearLine.AddListener(ClearLine);
         _base.OnSelected.AddListener(ShowSelection);
         _base.OnUnselected.AddListener(HideSelection);
         _base.OnMassChanged.AddListener(UpdateVisual);
+        _base.OnMassChanged.AddListener(ChangeFieldColor);
+        _base.OnUnitTaken.AddListener(BasePopup);
         _base.OnOwnerChanged.AddListener(SetOwnerVisual);
+        _base.OnOwnerChanged.AddListener(ClearLine);
 
+        SetOwnerVisual();
+        ClearLine();
         HideSelection();
         UpdateVisual();
     }
@@ -32,6 +38,7 @@ public class BaseVisual : MonoBehaviour
         if (_base.iOwner != null)
         {
             _spriteRenderer.color = _base.data.color;
+
             float alfaColor = .3f;
             Color selectedColor = new Color(_base.data.color.r, _base.data.color.g, _base.data.color.b, alfaColor);
             _selectedSpriteRenderer.color = selectedColor;
@@ -43,6 +50,13 @@ public class BaseVisual : MonoBehaviour
 
     private void UpdateVisual() {
         _countText.text = _base.mass.ToString();
+    }
+
+    private void ChangeFieldColor() {
+        float colorCombining = _base.mass / _base.massMax;
+        Color fieldColor = _base.data.fieldColor.Evaluate(colorCombining);
+        //Color fieldColor = Color.Lerp(Color.white, _base.data.fieldColor, colorCombining);
+        _fieldSpriteRenderer.color = fieldColor;
     }
 
     private void DrawLine(Vector2 targetPosition) {
@@ -62,6 +76,7 @@ public class BaseVisual : MonoBehaviour
     }
 
     private void ClearLine() {
+        _lineRenderer.SetPosition(0, transform.position);
         _lineRenderer.SetPosition(1, transform.position);
         
         _arrorTransform.position = (Vector2)transform.position;
@@ -73,5 +88,9 @@ public class BaseVisual : MonoBehaviour
 
     private void HideSelection() {
         _selectedVisual.SetActive(false);
+    }
+
+    private void BasePopup() {
+        _baseAnimator.SetTrigger(POPUP);
     }
 }

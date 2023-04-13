@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IOwner
+public class Player : PlayerCore, IBaseOwner
 {
-    [SerializeField] private GameManager _gameManager;
-    public GameManager gameManager => _gameManager;
     [SerializeField] private PlayerData _data;
     public PlayerData data => _data;
 
@@ -13,8 +11,8 @@ public class Player : MonoBehaviour, IOwner
     private List<Base> _selectedBases = new List<Base>();
     private Base _targetBase;
     private Vector3 _targetPosition;
-    public void Init() {
-
+    public override void Init(LevelManager levelManager) {
+        _levelManager = levelManager;
     }
 
     private void Update() {
@@ -116,16 +114,4 @@ public class Player : MonoBehaviour, IOwner
             _bases.Remove(baseArg);
         }
     }
-}
-
-[System.Serializable]
-public class PlayerData 
-{
-    public GameObject owner;
-    public float attack;
-    public float defense;
-    public float speed;
-    public float reproductionTime;
-    public Color color;
-    public Material lineMaterial;
 }

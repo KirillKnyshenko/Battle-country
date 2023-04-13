@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI : MonoBehaviour, IOwner
+public class AI : PlayerCore, IBaseOwner
 {
-    [SerializeField] private GameManager _gameManager;
-    public GameManager gameManager => _gameManager;
     [SerializeField] private float _analyzeTime;
     [SerializeField] private PlayerData _data;
     [SerializeField] private List<Base> _bases;
     public PlayerData data => _data;
     
-    public void Init()
-    {
+    public override void Init(LevelManager levelManager) {
+        _levelManager = levelManager;
         StartCoroutine(Analyze());
     }
 
@@ -28,7 +26,7 @@ public class AI : MonoBehaviour, IOwner
                 totalMass = totalMass + myBase.mass;
             }
 
-            var bases = _gameManager.levelManager.bases;
+            var bases = _levelManager.bases;
 
             foreach (var selectedBase in bases)
             {
