@@ -6,20 +6,24 @@ public class Base : MonoBehaviour
 {
     [SerializeField] private LevelManager _levelManager;
     public LevelManager levelManager => _levelManager;
-    [SerializeField] private GameObject _ownerObject;
-    private IBaseOwner _iOwner;
-    public IBaseOwner iOwner => _iOwner;
+
+    [SerializeField] private PlayerCore _playerCore;
+    public PlayerCore playerCore => _playerCore;
+
     [SerializeField] private PlayerData _data;
     public PlayerData data => _data;
+
     [SerializeField] private BaseVisual _baseVisual;
     public BaseVisual baseVisual => _baseVisual;
     
     [SerializeField] private float _mass;
     public float mass => _mass;
-    [SerializeField] private GameObject _unitPrefab;
-    [SerializeField] private float _spawnUnitsBorder;
     [SerializeField] private float _massMax;
     public float massMax => _massMax;
+
+    [SerializeField] private GameObject _unitPrefab;
+    [SerializeField] private float _spawnUnitsBorder;
+    
 
     public UnityEvent<Vector2> OnDrawLine;
     public UnityEvent OnClearLine;
@@ -32,7 +36,7 @@ public class Base : MonoBehaviour
     public void Init(LevelManager levelManager) {
         _levelManager = levelManager;
         
-        if (_ownerObject != null) SetOwner(_ownerObject);
+        if (_playerCore != null) SetOwner(_playerCore);
 
         _baseVisual.Init();
 
@@ -42,7 +46,7 @@ public class Base : MonoBehaviour
     private IEnumerator BaseUpdate() {
         while (true)
         {
-            if (_iOwner != null && _mass < _massMax) 
+            if (_playerCore != null && _mass < _massMax) 
             {
                 AddMass(1f);
                 yield return new WaitForSeconds(_data.reproductionTime);
@@ -52,26 +56,22 @@ public class Base : MonoBehaviour
         };
     }
 
-    private void SetOwner(GameObject ownerObject) {
-        if (_iOwner != null)
+    private void SetOwner(PlayerCore playerCore) {
+        if (_playerCore != null) _playerCore.RemoveBase(this);
+
+        _playerCore = playerCore;
+
+        if (_playerCore != null)
         {
-            _iOwner.RemoveBase(this);
-        }
+            _data = _playerCore.GetData();
 
-        _ownerObject = ownerObject;
-        _iOwner = ownerObject.GetComponent<IBaseOwner>();
-
-        if (_iOwner != null)
-        {
-            _data = _iOwner.GetData();
-
-            _iOwner.AddBase(this);
+            _playerCore.AddBase(this);
 
             OnOwnerChanged?.Invoke();
         }
         else
         {
-            Debug.LogError("Owner doesn't have a inteface");
+            Debug.LogError("PlayerCore was not found");
         }
     }
 
@@ -88,7 +88,7 @@ public class Base : MonoBehaviour
 
             Unit unitSkript = newUnit.GetComponent<Unit>();
 
-            unitSkript.SetTarget(target, _iOwner);
+            unitSkript.SetTarget(target, _playerCore);
         }
 
         RemoveMass(_mass);
@@ -112,7 +112,7 @@ public class Base : MonoBehaviour
             if (unit.targetObject == gameObject)
             {
 
-                if (unit.iOwner == _iOwner)
+                if (unit.playerCore == _playerCore)
                 {
                     AddMass(1f);
                 }
@@ -121,7 +121,7 @@ public class Base : MonoBehaviour
                     if (_mass == 0f)
                     {
                         // Change base owner
-                        SetOwner(unit.iOwner.GetData().owner);
+                        SetOwner(unit.playerCore);
                     } 
                     else
                     {

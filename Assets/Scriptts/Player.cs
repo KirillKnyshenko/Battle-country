@@ -2,65 +2,68 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : PlayerCore, IBaseOwner
+public class Player : PlayerCore
 {
-    [SerializeField] private PlayerData _data;
-    public PlayerData data => _data;
-
-    private List<Base> _bases = new List<Base>();
     private List<Base> _selectedBases = new List<Base>();
     private Base _targetBase;
     private Vector3 _targetPosition;
+
     public override void Init(LevelManager levelManager) {
         _levelManager = levelManager;
+        StartCoroutine(PlayerUpdate());
     }
 
-    private void Update() {
-#if UNITY_ANDROID
-        if (Input.touchCount > 0)
+    private IEnumerator PlayerUpdate() {
+        while (true)
         {
-            _targetPosition = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
+#if UNITY_ANDROID
+            if (Input.touchCount > 0)
+            {
+                _targetPosition = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
 
-            Collider2D targetCollider = Physics2D.Raycast(_targetPosition, transform.position).collider;
+                Collider2D targetCollider = Physics2D.Raycast(_targetPosition, transform.position).collider;
 
-            AddBase(targetCollider, _targetPosition);
-        }
+                AddBase(targetCollider, _targetPosition);
+            }
 #endif
 #if UNITY_EDITOR
-        if (Input.GetMouseButton(0))
-        {
-            _targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            Collider2D targetCollider = Physics2D.Raycast(_targetPosition, transform.position).collider;
-
-            AddBase(targetCollider, _targetPosition);
-        }
-#endif
-        else if (_selectedBases.Count != 0)
-        {
-            if (_targetBase != null)
+            if (Input.GetMouseButton(0))
             {
-                // Send units
+                _targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                Collider2D targetCollider = Physics2D.Raycast(_targetPosition, transform.position).collider;
+
+                AddBase(targetCollider, _targetPosition);
+            }
+#endif
+            else if (_selectedBases.Count != 0)
+            {
+                if (_targetBase != null)
+                {
+                    // Send units
+                    foreach (Base myBase in _selectedBases)
+                    {
+                        if (myBase.data == _data)
+                        {
+                            myBase.SendUnits(_targetBase.gameObject);
+                        }
+                    }
+                }
+
+                _targetBase?.OnUnselected?.Invoke();
+
                 foreach (Base myBase in _selectedBases)
                 {
                     if (myBase.data == _data)
                     {
-                        myBase.SendUnits(_targetBase.gameObject);
+                        myBase.OnClearLine?.Invoke();
                     }
                 }
+
+                _selectedBases.Clear();
             }
 
-            _targetBase?.OnUnselected?.Invoke();
-
-            foreach (Base myBase in _selectedBases)
-            {
-                if (myBase.data == _data)
-                {
-                    myBase.OnClearLine?.Invoke();
-                }
-            }
-
-            _selectedBases.Clear();
+            yield return null;
         }
     }
 
@@ -98,20 +101,6 @@ public class Player : PlayerCore, IBaseOwner
                     myBase.OnDrawLine?.Invoke(_targetPosition);
                 }
             }
-        }
-    }
-
-    public PlayerData GetData() {
-        return _data;
-    }
-
-    public void AddBase(Base baseArg) {
-        _bases.Add(baseArg);
-    }
-
-    public void RemoveBase(Base baseArg) {
-        if (_bases.Contains(baseArg)) {
-            _bases.Remove(baseArg);
         }
     }
 }

@@ -20,13 +20,18 @@ public class BaseVisual : MonoBehaviour
     public void Init() {
         _base.OnDrawLine.AddListener(DrawLine);
         _base.OnClearLine.AddListener(ClearLine);
+        
         _base.OnSelected.AddListener(ShowSelection);
         _base.OnUnselected.AddListener(HideSelection);
+
         _base.OnMassChanged.AddListener(UpdateVisual);
         _base.OnMassChanged.AddListener(ChangeFieldColor);
+
         _base.OnUnitTaken.AddListener(BasePopup);
+
         _base.OnOwnerChanged.AddListener(SetOwnerVisual);
         _base.OnOwnerChanged.AddListener(ClearLine);
+        _base.OnOwnerChanged.AddListener(ChangeFieldColor);
 
         SetOwnerVisual();
         ClearLine();
@@ -35,7 +40,7 @@ public class BaseVisual : MonoBehaviour
     }
 
     private void SetOwnerVisual() {
-        if (_base.iOwner != null)
+        if (_base.playerCore != null)
         {
             _spriteRenderer.color = _base.data.color;
 
@@ -54,8 +59,9 @@ public class BaseVisual : MonoBehaviour
 
     private void ChangeFieldColor() {
         float colorCombining = _base.mass / _base.massMax;
+
         Color fieldColor = _base.data.fieldColor.Evaluate(colorCombining);
-        //Color fieldColor = Color.Lerp(Color.white, _base.data.fieldColor, colorCombining);
+
         _fieldSpriteRenderer.color = fieldColor;
     }
 

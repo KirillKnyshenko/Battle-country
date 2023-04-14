@@ -5,20 +5,20 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [SerializeField] private UnitVisual _unitVisual;
-    private IBaseOwner _iOwner;
-    public IBaseOwner iOwner => _iOwner;
+    private PlayerCore _playerCore;
+    public PlayerCore playerCore => _playerCore;
     private PlayerData _data;
     public PlayerData data => _data;
     private GameObject _targetObject;
     public GameObject targetObject => _targetObject;
     private Vector2 _targetDir;
 
-    public void SetTarget(GameObject target, IBaseOwner iOwner) {
-        _iOwner = iOwner;
+    public void SetTarget(GameObject target, PlayerCore playerCore) {
+        _playerCore = playerCore;
         _targetObject = target;
         _targetDir = target.transform.position - transform.position;
         _targetDir = _targetDir.normalized;
-        _data = _iOwner.GetData();
+        _data = _playerCore.GetData();
         _unitVisual.Init();
     }
 
@@ -35,7 +35,7 @@ public class Unit : MonoBehaviour
         
         if (unit != null)
         {
-            if (_iOwner != unit.iOwner)
+            if (_playerCore != unit.playerCore)
             {
                 Destroy(unit.gameObject);
                 Destroy(this);
