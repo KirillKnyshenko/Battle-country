@@ -181,3 +181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitVisual: {fileID: 6123009950594816159}
+  _unitDis: 0
+  _unitSpeed: 0.7
+  _spreadSize: 1

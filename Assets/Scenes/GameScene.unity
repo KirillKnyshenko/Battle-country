@@ -154,6 +154,26 @@ PrefabInstance:
       propertyPath: _ownerObject
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[2]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[3]
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217637, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -259,6 +279,26 @@ PrefabInstance:
       propertyPath: _ownerObject
       value: 
       objectReference: {fileID: 1512238786}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[2]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[3]
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217637, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -368,6 +408,26 @@ PrefabInstance:
       propertyPath: _ownerObject
       value: 
       objectReference: {fileID: 379329711}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[2]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[3]
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217637, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -502,7 +562,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8.37
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -576,7 +636,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: _mass
-      value: 1
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: _massMax
@@ -590,6 +650,26 @@ PrefabInstance:
       propertyPath: _ownerObject
       value: 
       objectReference: {fileID: 379329711}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[2]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[3]
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217637, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -717,6 +797,26 @@ PrefabInstance:
       propertyPath: _ownerObject
       value: 
       objectReference: {fileID: 2055746808}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[2]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
+      propertyPath: _angles.Array.data[3]
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217637, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: m_RootOrder
       value: 7

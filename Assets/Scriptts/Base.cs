@@ -22,8 +22,12 @@ public class Base : MonoBehaviour
     public float massMax => _massMax;
 
     [SerializeField] private GameObject _unitPrefab;
-    [SerializeField] private float _spawnUnitsBorder;
-    
+    [SerializeField] private AnimationCurve _spawnSpeedCurve;
+    [SerializeField] private float[] _angles;
+
+    [SerializeField] private float _spawnUnitsBatchDelay;
+    [SerializeField] private float _spawnCooldown;
+    private bool _isSpawnCooldown = true;
 
     public UnityEvent<Vector2> OnDrawLine;
     public UnityEvent OnClearLine;
@@ -33,6 +37,8 @@ public class Base : MonoBehaviour
     public UnityEvent OnUnitTaken;
     public UnityEvent OnOwnerChanged;
 
+    private IEnumerator baseAction;
+
     public void Init(LevelManager levelManager) {
         _levelManager = levelManager;
         
@@ -40,16 +46,26 @@ public class Base : MonoBehaviour
 
         _baseVisual.Init();
 
-        StartCoroutine(BaseUpdate());
+        baseAction = SpawnUnits();
+
+        OnMassChanged?.Invoke();
+        StartCoroutine(baseAction);
     }
 
-    private IEnumerator BaseUpdate() {
+    private IEnumerator SpawnUnits() {
         while (true)
         {
+            if (_isSpawnCooldown)
+            {
+                yield return new WaitForSeconds(_spawnCooldown);
+                _isSpawnCooldown = false;
+            }
+
             if (_playerCore != null && _mass < _massMax) 
             {
                 AddMass(1f);
-                yield return new WaitForSeconds(_data.reproductionTime);
+                //yield return new WaitForSeconds(_data.reproductionTime);
+                yield return new WaitForSeconds(_spawnSpeedCurve.Evaluate(_mass/_massMax));
             }
 
             yield return null;
@@ -58,6 +74,8 @@ public class Base : MonoBehaviour
 
     private void SetOwner(PlayerCore playerCore) {
         if (_playerCore != null) _playerCore.RemoveBase(this);
+
+        StopAllCoroutines();  
 
         _playerCore = playerCore;
 
@@ -73,25 +91,51 @@ public class Base : MonoBehaviour
         {
             Debug.LogError("PlayerCore was not found");
         }
+
+        baseAction = SpawnUnits();
+        StartCoroutine(baseAction);
     }
 
     public void SendUnits(GameObject target) {
         if (target == gameObject) return;
 
-        for (int i = 0; i < _mass; i++)
+        StopAllCoroutines();
+
+        baseAction = GenerateUnits(target);      
+        StartCoroutine(baseAction);
+    }
+
+    public IEnumerator GenerateUnits(GameObject target) {
+        float unitsMass = _mass;
+        float maxUnitsPerBatch = _angles.Length;
+        
+        while (unitsMass > 0f)
         {
-            GameObject newUnit;
+            if (unitsMass > _mass)
+            {
+                unitsMass = _mass;
+            }
 
-            Vector3 unitPos = new Vector3(Random.Range(-_spawnUnitsBorder, _spawnUnitsBorder), Random.Range(-_spawnUnitsBorder, _spawnUnitsBorder)) + transform.position;    
+            float unitToGanerate = Mathf.Min(maxUnitsPerBatch, unitsMass);
 
-            newUnit = Instantiate(_unitPrefab, unitPos, Quaternion.identity);
+            for (int i = 0; i < unitToGanerate; i++)
+            {
+                Unit unitSkript = Instantiate(_unitPrefab, transform.position, Quaternion.identity).GetComponent<Unit>();
 
-            Unit unitSkript = newUnit.GetComponent<Unit>();
+                unitSkript.SetTarget(target, this, _angles[i]);
 
-            unitSkript.SetTarget(target, _playerCore);
+                RemoveMass(1f);
+                unitsMass--;
+            }
+
+            yield return new WaitForSeconds(_spawnUnitsBatchDelay);
         }
 
-        RemoveMass(_mass);
+        baseAction = SpawnUnits();
+        _isSpawnCooldown = true;
+        StartCoroutine(baseAction);
+
+        yield return null;
     }
 
     private void AddMass(float massToAdd) {
@@ -126,6 +170,7 @@ public class Base : MonoBehaviour
                     else
                     {
                         RemoveMass(1f);
+                        _isSpawnCooldown = true;
                     }
 
                 }

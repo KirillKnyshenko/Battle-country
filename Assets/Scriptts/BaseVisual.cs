@@ -12,6 +12,7 @@ public class BaseVisual : MonoBehaviour
     [SerializeField] private SpriteRenderer _fieldSpriteRenderer;
     [SerializeField] private Transform _arrorTransform;
     [SerializeField] private LineRenderer _lineRenderer;
+    [SerializeField] private GameObject _maxMassVisual;
     [SerializeField] private GameObject _selectedVisual;
     public LineRenderer LineRenderer => _lineRenderer;
     [SerializeField] private TextMeshProUGUI _countText;
@@ -55,6 +56,15 @@ public class BaseVisual : MonoBehaviour
 
     private void UpdateVisual() {
         _countText.text = _base.mass.ToString();
+
+        if (_base.massMax <= _base.mass)
+        {
+            _maxMassVisual.SetActive(true);
+        }
+        else
+        {
+            _maxMassVisual.SetActive(false);
+        }
     }
 
     private void ChangeFieldColor() {
