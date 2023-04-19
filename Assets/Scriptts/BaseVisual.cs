@@ -70,9 +70,12 @@ public class BaseVisual : MonoBehaviour
     private void ChangeFieldColor() {
         float colorCombining = _base.mass / _base.massMax;
 
-        Color fieldColor = _base.data.fieldColor.Evaluate(colorCombining);
+        if (_base.data != null)
+        {
+            Color fieldColor = _base.data.fieldColor.Evaluate(colorCombining);
 
-        _fieldSpriteRenderer.color = fieldColor;
+            _fieldSpriteRenderer.color = fieldColor;
+        }
     }
 
     private void DrawLine(Vector2 targetPosition) {

@@ -46,6 +46,7 @@ public class Base : MonoBehaviour
 
         _baseVisual.Init();
 
+        StopAllCoroutines();  
         baseAction = SpawnUnits();
 
         OnMassChanged?.Invoke();
@@ -61,10 +62,10 @@ public class Base : MonoBehaviour
                 _isSpawnCooldown = false;
             }
 
-            if (_playerCore != null && _mass < _massMax) 
+            if (_mass < _massMax) 
             {
                 AddMass(1f);
-                //yield return new WaitForSeconds(_data.reproductionTime);
+
                 yield return new WaitForSeconds(_spawnSpeedCurve.Evaluate(_mass/_massMax));
             }
 

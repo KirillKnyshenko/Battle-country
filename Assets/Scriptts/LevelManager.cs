@@ -21,4 +21,8 @@ public class LevelManager : MonoBehaviour
             myBase.Init(this);
         }
     }
+
+    private void LoadLevel() {
+
+    }
 }
