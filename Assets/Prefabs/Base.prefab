@@ -806,6 +806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac8a6322a48fb5d438727e681081e855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _colorSpeed: 2
   _base: {fileID: 7568638690243217636}
   _spriteRenderer: {fileID: 7568638689962223933}
   _selectedSpriteRenderer: {fileID: 8955929437480962635}
@@ -927,7 +928,6 @@ MonoBehaviour:
   _baseVisual: {fileID: 1788464173488970010}
   _mass: 1
   _massMax: 80
-  _unitPrefab: {fileID: 5712927564533267057, guid: 6a51cd539b471344c9d899bfdd80365c, type: 3}
   _spawnSpeedCurve:
     serializedVersion: 2
     m_Curve:
