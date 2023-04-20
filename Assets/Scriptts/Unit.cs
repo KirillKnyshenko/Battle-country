@@ -24,6 +24,8 @@ public class Unit : MonoBehaviour
     private Vector3 _offsetDir;
 
     public void SetTarget(GameObject target, Base baseParent, float angle) {
+        transform.position = baseParent.transform.position;
+
         _baseParent = baseParent;
         _playerCore = _baseParent.playerCore;
 
@@ -69,8 +71,8 @@ public class Unit : MonoBehaviour
         {
             if (_playerCore != unit.playerCore)
             {
-                Destroy(unit.gameObject);
-                Destroy(this);
+                unit.gameObject.SetActive(false);
+                gameObject.SetActive(false);
             }   
         }
     }

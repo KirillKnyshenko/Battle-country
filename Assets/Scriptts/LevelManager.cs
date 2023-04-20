@@ -9,7 +9,15 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<Base> _bases;
     public List<Base> bases => _bases;
     [SerializeField] private List<PlayerCore> _players;
+
+    [SerializeField] private int _poolCount;
+    private bool _autoExpand = true;
+    [SerializeField] private Unit _unitPrefab;
+    [SerializeField] private Transform _poolContainer;
     
+    private PoolMono<Unit> _pool;
+    public PoolMono<Unit> pool => _pool;
+
     public void Init() {
         foreach (var player in _players)
         {
@@ -20,6 +28,9 @@ public class LevelManager : MonoBehaviour
         {
             myBase.Init(this);
         }
+
+        this._pool = new PoolMono<Unit>(_unitPrefab, _poolCount, _poolContainer);
+        this._pool.autoExpand = _autoExpand;
     }
 
     private void LoadLevel() {

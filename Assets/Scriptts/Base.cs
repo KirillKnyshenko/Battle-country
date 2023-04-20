@@ -21,7 +21,6 @@ public class Base : MonoBehaviour
     [SerializeField] private float _massMax;
     public float massMax => _massMax;
 
-    [SerializeField] private GameObject _unitPrefab;
     [SerializeField] private AnimationCurve _spawnSpeedCurve;
     [SerializeField] private float[] _angles;
 
@@ -121,7 +120,7 @@ public class Base : MonoBehaviour
 
             for (int i = 0; i < unitToGanerate; i++)
             {
-                Unit unitSkript = Instantiate(_unitPrefab, transform.position, Quaternion.identity).GetComponent<Unit>();
+                Unit unitSkript = levelManager.pool.GetFreeElement();
 
                 unitSkript.SetTarget(target, this, _angles[i]);
 
@@ -177,7 +176,7 @@ public class Base : MonoBehaviour
                 }
 
                 OnUnitTaken?.Invoke();
-                Destroy(unit.gameObject);
+                unit.gameObject.SetActive(false);
             }
         }
     }

@@ -662,11 +662,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: _mass
-      value: 1
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: _massMax
-      value: 8
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7568638690243217636, guid: 8bdeab85d441bb5419860140a01b0b56, type: 3}
       propertyPath: _playerCore
@@ -785,6 +785,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ab4d647b9bd984eb688da728d2fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &973684264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 973684266}
+  - component: {fileID: 973684265}
+  m_Layer: 0
+  m_Name: PoolUnitsParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &973684265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973684264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b82c4229eb484c347a0b6e507a5c8119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &973684266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973684264}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1009337231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1283,6 +1326,9 @@ MonoBehaviour:
   - {fileID: 1888005337}
   - {fileID: 2055746809}
   - {fileID: 1512238787}
+  _poolCount: 200
+  _unitPrefab: {fileID: 7767937080280710350, guid: 6a51cd539b471344c9d899bfdd80365c, type: 3}
+  _poolContainer: {fileID: 973684266}
 --- !u!1 &1888005336
 GameObject:
   m_ObjectHideFlags: 0
