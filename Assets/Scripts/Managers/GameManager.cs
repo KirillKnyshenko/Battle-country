@@ -17,7 +17,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private LevelManager _levelManager;
     public LevelManager levelManager => _levelManager;
-    
+
+    [SerializeField] private UIManager _UIManager;
+    public UIManager UIManager => _UIManager;
+
     [SerializeField] private SaveDataSO _saveData;
     [SerializeField] private LevelListSO _levelListSO;
 
@@ -27,6 +30,10 @@ public class GameManager : MonoBehaviour
     {
         _state = State.WaitingToStart;
         _levelManager.Init(this);
+
+        _level = _saveData.level + (_levelListSO.levels.Count * (_saveData.loop - 1));
+
+        _UIManager.Init(this, _level);
         StartCoroutine(GameManagerUpdate());
     }
 

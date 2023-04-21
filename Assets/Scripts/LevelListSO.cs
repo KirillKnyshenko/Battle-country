@@ -9,11 +9,11 @@ public class LevelListSO : ScriptableObject
     public List<string> levels;
 
     public int GetNextLevel() {
-        saveDataSO.level += 1;
+        saveDataSO.NextLevel();
 
-        if (saveDataSO.level >= levels.Count)
+        if (saveDataSO.level > levels.Count)
         {
-            saveDataSO.level = 0;
+            saveDataSO.SetLevel(1);
             saveDataSO.loop++;
         }
 
@@ -21,7 +21,7 @@ public class LevelListSO : ScriptableObject
     }
 
     public string GetCurrentLevelName() {
-        return levels[saveDataSO.level];
+        return levels[saveDataSO.level - 1];
     }
 }
 

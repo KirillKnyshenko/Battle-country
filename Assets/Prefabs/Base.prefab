@@ -267,7 +267,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 0.6313726, g: 0.6313726, b: 0.6313726, a: 1}
+  m_Color: {r: 0.9254902, g: 0.9254902, b: 0.9254902, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -897,8 +897,8 @@ MonoBehaviour:
     color: {r: 0, g: 0, b: 0, a: 0}
     fieldColor:
       serializedVersion: 2
-      key0: {r: 0.6313726, g: 0.6313726, b: 0.6313726, a: 1}
-      key1: {r: 0.6313726, g: 0.6313726, b: 0.6313726, a: 1}
+      key0: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
+      key1: {r: 0.67058825, g: 0.67058825, b: 0.67058825, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -980,7 +980,7 @@ MonoBehaviour:
   OnUnselected:
     m_PersistentCalls:
       m_Calls: []
-  OnMassChanged:
+  OnMassUpdate:
     m_PersistentCalls:
       m_Calls: []
   OnUnitTaken:

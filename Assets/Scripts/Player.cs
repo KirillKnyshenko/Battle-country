@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class Player : PlayerCore
     public override void Init(LevelManager levelManager) {
         _levelManager = levelManager;
         StartCoroutine(PlayerUpdate());
+        StartCoroutine(UpdateMass());
     }
 
     private IEnumerator PlayerUpdate() {

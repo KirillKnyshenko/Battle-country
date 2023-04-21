@@ -26,8 +26,8 @@ public class BaseVisual : MonoBehaviour
         _base.OnSelected.AddListener(ShowSelection);
         _base.OnUnselected.AddListener(HideSelection);
 
-        _base.OnMassChanged.AddListener(UpdateVisual);
-        _base.OnMassChanged.AddListener(ChangeFieldColor);
+        _base.OnMassUpdate.AddListener(UpdateVisual);
+        _base.OnMassUpdate.AddListener(ChangeFieldColor);
 
         _base.OnUnitTaken.AddListener(BasePopup);
 

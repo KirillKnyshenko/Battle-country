@@ -32,7 +32,7 @@ public class Base : MonoBehaviour
     public UnityEvent OnClearLine;
     public UnityEvent OnSelected;
     public UnityEvent OnUnselected;
-    public UnityEvent OnMassChanged;
+    public UnityEvent OnMassUpdate;
     public UnityEvent OnUnitTaken;
     public UnityEvent OnOwnerChanged;
 
@@ -48,7 +48,7 @@ public class Base : MonoBehaviour
         StopAllCoroutines();  
         baseAction = SpawnUnits();
 
-        OnMassChanged?.Invoke();
+        OnMassUpdate?.Invoke();
         StartCoroutine(baseAction);
     }
 
@@ -85,6 +85,7 @@ public class Base : MonoBehaviour
 
             _playerCore.AddBase(this);
 
+            OnMassUpdate?.Invoke();
             OnOwnerChanged?.Invoke();
         }
         else
@@ -139,13 +140,17 @@ public class Base : MonoBehaviour
     }
 
     private void AddMass(float massToAdd) {
+        float oldMass = _mass;
         _mass = _mass + massToAdd;
-        OnMassChanged?.Invoke();
+
+        OnMassUpdate?.Invoke();
     }
 
     private void RemoveMass(float massToRemove) {
+        float oldMass = _mass;
         _mass = _mass - massToRemove;
-        OnMassChanged?.Invoke();
+
+        OnMassUpdate?.Invoke();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

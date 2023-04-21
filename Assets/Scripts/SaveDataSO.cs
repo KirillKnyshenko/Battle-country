@@ -4,7 +4,8 @@ using System.IO;
 [CreateAssetMenu()]
 public class SaveDataSO : ScriptableObject
 {
-    public int level = 1;
+    [SerializeField] private int _level = 1;
+    public int level => _level;
     public int loop = 1;
 
     public void Save() {
@@ -21,6 +22,14 @@ public class SaveDataSO : ScriptableObject
         {
             Save();
         }
+    }
+
+    public void NextLevel() {
+        _level++;
+    }
+
+    public void SetLevel(int level) {
+        _level = level;
     }
 
     public void Delete() {
