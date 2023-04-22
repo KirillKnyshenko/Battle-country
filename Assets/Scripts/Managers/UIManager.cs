@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
     private GameManager _gameManager;
@@ -11,6 +13,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _templeteBar;
     [SerializeField] private TextMeshProUGUI _levelText;
     private List<BarVisual> _bars;
+
+    [SerializeField] private float _timeToHide;
+    [SerializeField] private Image _tapToStartBacground;
+    [SerializeField] private Transform _tapToStartButton;
 
     public void Init(GameManager gameManager, int level) {
         _gameManager = gameManager;
@@ -56,5 +62,10 @@ public class UIManager : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void HideTapToStart() {
+        _tapToStartBacground.DOFade(0f, _timeToHide);
+        _tapToStartButton.DOMoveY(-1000F, _timeToHide);
     }
 }

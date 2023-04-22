@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
         _UIManager.Init(this, _level);
         StartCoroutine(GameManagerUpdate());
+
+        Time.timeScale = 0f;
     }
 
     private IEnumerator GameManagerUpdate() {
@@ -44,10 +46,10 @@ public class GameManager : MonoBehaviour
             {
                 case State.WaitingToStart:
 
-                    _state = State.GamePlaying;
                 break;
                 case State.GamePlaying:
-
+                    Time.timeScale = 1f;
+                    
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
                         _state = State.GameOver;
@@ -66,6 +68,11 @@ public class GameManager : MonoBehaviour
         _levelListSO.GetNextLevel();
         _saveData.Save();
         LoadCurrentLevel();
+    }
+
+    public void StartGamePlaying() {
+        print(1);
+        _state = State.GamePlaying;
     }
 
     public void LoadCurrentLevel() {
