@@ -47,14 +47,15 @@ public class LevelManager : MonoBehaviour
 
     public float GetSumMass() {
         float sumMass = 0f;
-        foreach (var player in _players)
-        {
-            //sumMass += player.playerMass;
-        }
 
         foreach (var myBase in bases)
         {
             sumMass += myBase.mass;
+        }
+
+        foreach (var player in players)
+        {
+            sumMass += player.unitMass;
         }
 
         return sumMass;

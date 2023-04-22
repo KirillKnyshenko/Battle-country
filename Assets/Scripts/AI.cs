@@ -8,8 +8,11 @@ public class AI : PlayerCore
     
     public override void Init(LevelManager levelManager) {
         _levelManager = levelManager;
-        StartCoroutine(Analyze());
-        StartCoroutine(UpdateMass());
+
+        _levelManager.gameManager.OnGameStarted.AddListener( () => {
+            StartCoroutine(Analyze());
+            StartCoroutine(UpdateMass());
+        });
     }
 
     private IEnumerator Analyze() {

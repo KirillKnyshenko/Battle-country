@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private enum State {
-        WaitingToStart,
+        TapToStart,
+        TutorialToStart,
         GamePlaying,
         GameOver,
     }
@@ -23,20 +24,24 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private SaveDataSO _saveData;
     [SerializeField] private LevelListSO _levelListSO;
-
+    
     public UnityEvent OnNextLevel;
+    public UnityEvent OnTapToStart;
+    public UnityEvent OnTutorialToStart;
+    public UnityEvent OnGameStarted;
+    public UnityEvent OnGameOver;
 
     private void Start()
     {
-        _state = State.WaitingToStart;
+        _state = State.TapToStart;
         _levelManager.Init(this);
 
-        _level = _saveData.level + (_levelListSO.levels.Count * (_saveData.loop - 1));
+        int currentLevel = _saveData.level + (_levelListSO.levels.Count * (_saveData.loop - 1));
+
+        _level = currentLevel;
 
         _UIManager.Init(this, _level);
         StartCoroutine(GameManagerUpdate());
-
-        Time.timeScale = 0f;
     }
 
     private IEnumerator GameManagerUpdate() {
@@ -44,12 +49,14 @@ public class GameManager : MonoBehaviour
         {
             switch (_state)
             {
-                case State.WaitingToStart:
+                case State.TapToStart:
 
                 break;
-                case State.GamePlaying:
-                    Time.timeScale = 1f;
+                case State.TutorialToStart:
                     
+                break;
+                case State.GamePlaying:        
+
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
                         _state = State.GameOver;
@@ -70,13 +77,26 @@ public class GameManager : MonoBehaviour
         LoadCurrentLevel();
     }
 
+    public void StartTutorialToStart() {
+        _state = State.TutorialToStart;
+        OnTutorialToStart?.Invoke();
+    }
+
     public void StartGamePlaying() {
-        print(1);
         _state = State.GamePlaying;
+        OnGameStarted?.Invoke();
     }
 
     public void LoadCurrentLevel() {
         SceneManager.LoadScene(_levelListSO.GetCurrentLevelName());
+    }
+
+    public bool IsTutorialToStart() {
+        return _state == State.TutorialToStart;
+    }
+
+    public bool IsGamePlaying() {
+        return _state == State.GamePlaying;
     }
 
     public bool IsGameOver() {

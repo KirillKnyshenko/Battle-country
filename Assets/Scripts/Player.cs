@@ -11,8 +11,11 @@ public class Player : PlayerCore
 
     public override void Init(LevelManager levelManager) {
         _levelManager = levelManager;
-        StartCoroutine(PlayerUpdate());
-        StartCoroutine(UpdateMass());
+
+        _levelManager.gameManager.OnTutorialToStart.AddListener( () => {
+            StartCoroutine(PlayerUpdate());
+            StartCoroutine(UpdateMass());
+        });
     }
 
     private IEnumerator PlayerUpdate() {
@@ -47,6 +50,7 @@ public class Player : PlayerCore
                     {
                         if (myBase.data == _data)
                         {
+                            if (levelManager.gameManager.IsTutorialToStart()) levelManager.gameManager.StartGamePlaying();
                             myBase.SendUnits(_targetBase.gameObject);
                         }
                     }

@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float _timeToHide;
     [SerializeField] private Image _tapToStartBacground;
     [SerializeField] private Transform _tapToStartButton;
-
+    [SerializeField] private TutorialUI _tutorialUI;
     public void Init(GameManager gameManager, int level) {
         _gameManager = gameManager;
         _levelManager = _gameManager.levelManager;
@@ -43,7 +43,11 @@ public class UIManager : MonoBehaviour
             _bars.Add(barVisual);
         }
 
-        StartCoroutine(UpdateUI());
+        _tutorialUI.Init(this);
+
+        _gameManager.OnTutorialToStart.AddListener(() => {
+            StartCoroutine(UpdateUI());
+        });
     }
 
     private IEnumerator UpdateUI() {

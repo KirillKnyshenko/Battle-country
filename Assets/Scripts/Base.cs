@@ -44,12 +44,14 @@ public class Base : MonoBehaviour
         if (_playerCore != null) SetOwner(_playerCore);
 
         _baseVisual.Init();
-
-        StopAllCoroutines();  
-        baseAction = SpawnUnits();
-
         OnMassUpdate?.Invoke();
-        StartCoroutine(baseAction);
+        
+        _levelManager.gameManager.OnGameStarted.AddListener( () => {
+            StopAllCoroutines();  
+            baseAction = SpawnUnits();
+         
+            StartCoroutine(baseAction);
+        });
     }
 
     private IEnumerator SpawnUnits() {
@@ -92,9 +94,12 @@ public class Base : MonoBehaviour
         {
             Debug.LogError("PlayerCore was not found");
         }
+        
+        if (!levelManager.gameManager.IsGamePlaying()) return;
 
-        baseAction = SpawnUnits();
+        baseAction = SpawnUnits();      
         StartCoroutine(baseAction);
+        _isSpawnCooldown = true;
     }
 
     public void SendUnits(GameObject target) {

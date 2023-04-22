@@ -28,6 +28,7 @@ public class Unit : MonoBehaviour
 
         _baseParent = baseParent;
         _playerCore = _baseParent.playerCore;
+        _playerCore.AddUnitMass();
 
         _data = _playerCore.GetData();
         _unitVisual.Init();
@@ -75,5 +76,10 @@ public class Unit : MonoBehaviour
                 gameObject.SetActive(false);
             }   
         }
+    }
+
+    private void OnDisable() {
+        if (_playerCore != null)
+            _playerCore.RemoveUnitMass();
     }
 }
