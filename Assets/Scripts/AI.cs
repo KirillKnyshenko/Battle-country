@@ -20,7 +20,6 @@ public class AI : PlayerCore
         {
             yield return new WaitForSeconds(_analyzeTime);
             
-            
             Attack(FindTargetBase());
         }
     }

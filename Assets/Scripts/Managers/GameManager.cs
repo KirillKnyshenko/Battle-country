@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
     private enum State {
@@ -25,11 +26,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SaveDataSO _saveData;
     [SerializeField] private LevelListSO _levelListSO;
     
-    public UnityEvent OnNextLevel;
+    public UnityEvent OnStartLevel;
     public UnityEvent OnTapToStart;
     public UnityEvent OnTutorialToStart;
     public UnityEvent OnGameStarted;
     public UnityEvent OnGameOver;
+    public UnityEvent OnWin;
+    public UnityEvent OnLose;
 
     private void Start()
     {
@@ -42,11 +45,26 @@ public class GameManager : MonoBehaviour
 
         _UIManager.Init(this, _level);
         StartCoroutine(GameManagerUpdate());
+
+        DOTween.Init(true, true, LogBehaviour.ErrorsOnly);
     }
 
     private IEnumerator GameManagerUpdate() {
         while (true)
         {
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                Lose();
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                Win();
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _state = State.GameOver;
+            }
+
             switch (_state)
             {
                 case State.TapToStart:
@@ -56,24 +74,47 @@ public class GameManager : MonoBehaviour
                     
                 break;
                 case State.GamePlaying:        
+                    if (levelManager.players[0].playerMass <= 0f)
+                        Lose();
 
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    float enemyMass = 0f;
+                    for (int i = 1; i < levelManager.players.Count; i++)
                     {
-                        _state = State.GameOver;
+                        enemyMass += levelManager.players[i].playerMass;
                     }
+                    if (enemyMass == 0f)
+                        Win();
                 break;
                 case State.GameOver:
-                    NextLevel();
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        NextLevel();
+                    }
                 break;
             }
             yield return null;
         }
     }
 
+    public void Win() {
+        OnWin?.Invoke();
+        _state = State.GameOver;
+    }
+
+    public void Lose() {  
+        OnLose?.Invoke();
+        _state = State.GameOver;
+    }
+
     public void NextLevel() {
-        OnNextLevel?.Invoke();
+        OnStartLevel?.Invoke();
         _levelListSO.GetNextLevel();
         _saveData.Save();
+        LoadCurrentLevel();
+    }
+
+    public void RestartLevel() {
+        OnStartLevel?.Invoke();
         LoadCurrentLevel();
     }
 

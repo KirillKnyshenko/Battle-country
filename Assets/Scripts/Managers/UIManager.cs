@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
+    public static int IS_WIN = Animator.StringToHash("isWin");
     private GameManager _gameManager;
     public GameManager gameManager => _gameManager;
     private LevelManager _levelManager;
@@ -18,13 +19,46 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image _tapToStartBacground;
     [SerializeField] private Transform _tapToStartButton;
     [SerializeField] private TutorialUI _tutorialUI;
+
+    [SerializeField] private GameObject _winUI;
+    [SerializeField] private float _winUISpeed;
+    [SerializeField] private Image _winBackground;
+    [SerializeField] private Transform _winLabelTF;
+    [SerializeField] private Transform _winButtonTF;
+    [SerializeField] private Transform _winAreaTF;
+
+    [SerializeField] private GameObject _loseUI;
+    [SerializeField] private float _loseUISpeed;
+    [SerializeField] private Image _loseBackground;
+    [SerializeField] private Transform _loseLabelTF;
+    [SerializeField] private Transform _loseButtonTF;
+
+    [SerializeField] private Transform _ButtonTargetTF;
+    [SerializeField] private Animator _winUIAnimator;
+
     public void Init(GameManager gameManager, int level) {
         _gameManager = gameManager;
         _levelManager = _gameManager.levelManager;
-        _bars = new List<BarVisual>();
+
         _templeteBar.SetActive(false);
+        _winUI.SetActive(false);
+        _loseUI.SetActive(false);
+
         _levelText.text = "LEVEL " + level;
 
+        _bars = new List<BarVisual>();
+        BarInit();
+
+        _tutorialUI.Init(this);
+
+        _gameManager.OnLose.AddListener(LoseUI);
+        _gameManager.OnWin.AddListener(WinUI);
+        _gameManager.OnTutorialToStart.AddListener(() => {
+            StartCoroutine(UpdateUI());
+        });
+    }
+
+    private void BarInit() {
         for (int i = 0; i < _levelManager.players.Count; i++)
         {
             GameObject newBar = Instantiate(_templeteBar, Vector3.zero, Quaternion.identity, _parentBar);
@@ -42,12 +76,6 @@ public class UIManager : MonoBehaviour
 
             _bars.Add(barVisual);
         }
-
-        _tutorialUI.Init(this);
-
-        _gameManager.OnTutorialToStart.AddListener(() => {
-            StartCoroutine(UpdateUI());
-        });
     }
 
     private IEnumerator UpdateUI() {
@@ -67,9 +95,39 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
     }
-
     public void HideTapToStart() {
-        _tapToStartBacground.DOFade(0f, _timeToHide);
+        _tapToStartBacground.DOFade(0f, _timeToHide).onComplete += () => {
+            _tapToStartBacground.gameObject.SetActive(false);
+        };
+        
         _tapToStartButton.DOMoveY(-1000F, _timeToHide);
+    }
+
+    private void WinUI() {
+        _winUI.SetActive(true);
+        
+        Color alfaBackground = new Color(_winBackground.color.r, _winBackground.color.g, _winBackground.color.b, 0f);
+        _winBackground.color = alfaBackground;
+        _winBackground.DOFade(.8f, _winUISpeed).SetLink(_winBackground.gameObject);
+
+        _winLabelTF.localScale = Vector3.zero;
+        _winLabelTF.DOScale(Vector3.one, _loseUISpeed).SetLink(_winLabelTF.gameObject);
+
+        _winButtonTF.DOLocalMove(_ButtonTargetTF.localPosition, _loseUISpeed).SetLink(_winButtonTF.gameObject);
+
+        _winAreaTF.DOLocalRotate(new Vector3(0, 0, 360), 10f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart).SetLink(_winAreaTF.gameObject);
+        _winUIAnimator.SetTrigger(IS_WIN);
+    }
+
+    private void LoseUI() {
+        _loseUI.SetActive(true);
+
+        Color alfaBackground = new Color(_loseBackground.color.r, _loseBackground.color.g, _loseBackground.color.b, 0f);
+        _loseBackground.color = alfaBackground;
+        _loseBackground.DOFade(.8f, _loseUISpeed).SetLink(_loseBackground.gameObject);
+
+        _loseLabelTF.DOShakeScale(_loseUISpeed, 0.5f).SetLink(_loseLabelTF.gameObject);
+
+        _loseButtonTF.DOLocalMove(_ButtonTargetTF.localPosition, _loseUISpeed).SetLink(_loseLabelTF.gameObject);
     }
 }

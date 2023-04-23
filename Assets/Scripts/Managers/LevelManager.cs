@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
 
     public void Init(GameManager gameManager) {
         _gameManager = gameManager;
-        _gameManager.OnNextLevel.AddListener(ClearPool);
+        _gameManager.OnStartLevel.AddListener(ClearPool);
 
         foreach (var myBase in _bases)
         {

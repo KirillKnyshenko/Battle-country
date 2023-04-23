@@ -36,12 +36,11 @@ public class TutorialUI : MonoBehaviour
         if (_UIManager.gameManager.IsTutorialToStart())
         {
             transform.position = _fromPos;
-            transform.DOMove(_aimPos, _speed).onComplete += LoopTutorial;
+            transform.DOMove(_aimPos, _speed).SetLink(gameObject).onComplete += LoopTutorial;
         }
     }
 
     private void StopTutorial() {
-        gameObject.SetActive(false);
-        
+        gameObject.SetActive(false);    
     }
 }

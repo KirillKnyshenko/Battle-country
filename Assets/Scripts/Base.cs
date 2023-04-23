@@ -145,14 +145,12 @@ public class Base : MonoBehaviour
     }
 
     private void AddMass(float massToAdd) {
-        float oldMass = _mass;
         _mass = _mass + massToAdd;
 
         OnMassUpdate?.Invoke();
     }
 
     private void RemoveMass(float massToRemove) {
-        float oldMass = _mass;
         _mass = _mass - massToRemove;
 
         OnMassUpdate?.Invoke();
