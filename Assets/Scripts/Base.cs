@@ -34,6 +34,7 @@ public class Base : MonoBehaviour
     public UnityEvent OnUnselected;
     public UnityEvent OnMassUpdate;
     public UnityEvent OnUnitTaken;
+    public static UnityEvent OnAnyUnitTaken;
     public UnityEvent OnOwnerChanged;
 
     private IEnumerator baseAction;
@@ -184,6 +185,7 @@ public class Base : MonoBehaviour
                 }
 
                 OnUnitTaken?.Invoke();
+                OnAnyUnitTaken?.Invoke();
                 unit.gameObject.SetActive(false);
             }
         }

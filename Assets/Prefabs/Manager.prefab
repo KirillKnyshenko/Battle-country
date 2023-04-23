@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5815166683361085767}
   - component: {fileID: 5815166683361085764}
+  - component: {fileID: 4222936878288202842}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -44,8 +45,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 0}
+  _UIManager: {fileID: 0}
+  _soundManager: {fileID: 4222936878288202842}
   _saveData: {fileID: 11400000, guid: 0b2a4b0474806b6459a7207ec399b774, type: 2}
   _levelListSO: {fileID: 11400000, guid: 09bc23d8f44290444a1d395095a77059, type: 2}
-  OnStateChanged:
+  OnStartLevel:
     m_PersistentCalls:
       m_Calls: []
+  OnTapToStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTutorialToStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGameStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGameOver:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWin:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLose:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4222936878288202842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5815166683361085765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9d01835dc8a86c4e9e679fde0cd3c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClipRefsSO: {fileID: 11400000, guid: 9227818f711bad543944b20513a6dc0f, type: 2}

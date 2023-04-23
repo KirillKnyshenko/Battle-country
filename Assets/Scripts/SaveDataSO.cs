@@ -8,6 +8,9 @@ public class SaveDataSO : ScriptableObject
     public int level => _level;
     public int loop = 1;
 
+    public bool soundVolume = true;
+    public bool musicVolume = true;
+
     public void Save() {
         var data = JsonUtility.ToJson(this);
         File.WriteAllText(BuildPath("Save.JSON"), data);
@@ -30,6 +33,11 @@ public class SaveDataSO : ScriptableObject
 
     public void SetLevel(int level) {
         _level = level;
+    }
+
+    public void SetAudioData(bool musicVolume, bool soundVolume) {
+        this.musicVolume = musicVolume;
+        this.soundVolume = soundVolume;
     }
 
     public void Delete() {

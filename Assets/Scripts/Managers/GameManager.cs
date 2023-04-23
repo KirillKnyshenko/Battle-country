@@ -23,7 +23,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UIManager _UIManager;
     public UIManager UIManager => _UIManager;
 
+    [SerializeField] private SoundManager _soundManager;
+    public SoundManager soundManager => _soundManager;
+
     [SerializeField] private SaveDataSO _saveData;
+    public SaveDataSO saveData => _saveData;
     [SerializeField] private LevelListSO _levelListSO;
     
     public UnityEvent OnStartLevel;
@@ -44,9 +48,12 @@ public class GameManager : MonoBehaviour
         _level = currentLevel;
 
         _UIManager.Init(this, _level);
+
+        _soundManager.Init(this);
+
         StartCoroutine(GameManagerUpdate());
 
-        DOTween.Init(true, true, LogBehaviour.ErrorsOnly);
+        //DOTween.Init(true, true, LogBehaviour.ErrorsOnly);
     }
 
     private IEnumerator GameManagerUpdate() {

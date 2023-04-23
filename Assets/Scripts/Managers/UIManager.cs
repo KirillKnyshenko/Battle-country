@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform _tapToStartButton;
     [SerializeField] private TutorialUI _tutorialUI;
 
+    [SerializeField] private GameObject _settingsPanel;
+
     [SerializeField] private GameObject _winUI;
     [SerializeField] private float _winUISpeed;
     [SerializeField] private Image _winBackground;
@@ -36,6 +38,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform _ButtonTargetTF;
     [SerializeField] private Animator _winUIAnimator;
 
+    [SerializeField] private GameObject _soundLine;
+    [SerializeField] private TextMeshProUGUI _soundText;
+    [SerializeField] private GameObject _musicLine;
+    [SerializeField] private TextMeshProUGUI _musicText;
+
     public void Init(GameManager gameManager, int level) {
         _gameManager = gameManager;
         _levelManager = _gameManager.levelManager;
@@ -43,6 +50,7 @@ public class UIManager : MonoBehaviour
         _templeteBar.SetActive(false);
         _winUI.SetActive(false);
         _loseUI.SetActive(false);
+        _settingsPanel.SetActive(false);
 
         _levelText.text = "LEVEL " + level;
 
@@ -99,7 +107,7 @@ public class UIManager : MonoBehaviour
         _tapToStartBacground.DOFade(0f, _timeToHide).onComplete += () => {
             _tapToStartBacground.gameObject.SetActive(false);
         };
-        
+
         _tapToStartButton.DOMoveY(-1000F, _timeToHide);
     }
 
@@ -129,5 +137,51 @@ public class UIManager : MonoBehaviour
         _loseLabelTF.DOShakeScale(_loseUISpeed, 0.5f).SetLink(_loseLabelTF.gameObject);
 
         _loseButtonTF.DOLocalMove(_ButtonTargetTF.localPosition, _loseUISpeed).SetLink(_loseLabelTF.gameObject);
+    }
+
+    public void ShowSettings() {
+        _settingsPanel.SetActive(true);
+        UpdateSoundVisual();
+        UpdateMusicVisual();
+    }
+
+    public void HideSettings() {
+        _settingsPanel.SetActive(false);
+    }
+
+    public void ToggleSound() {
+        gameManager.soundManager.ToggleSound();
+        UpdateSoundVisual();
+    }
+
+    public void ToggleMusic() {
+        gameManager.soundManager.ToggleMusic();
+        UpdateMusicVisual();
+    }
+
+    private void UpdateMusicVisual() {
+        if (gameManager.soundManager.isMusic)
+        {
+            _musicLine.SetActive(false);
+            _musicText.text = "Music: on";
+        }
+        else
+        {
+            _musicLine.SetActive(true);
+            _musicText.text = "Music: off";
+        }
+    }
+
+    private void UpdateSoundVisual() {
+        if (gameManager.soundManager.isSound)
+        {
+            _soundLine.SetActive(false);
+            _soundText.text = "Sound: on";
+        }
+        else
+        {
+            _soundLine.SetActive(true);
+            _soundText.text = "Sound: off";
+        }
     }
 }
