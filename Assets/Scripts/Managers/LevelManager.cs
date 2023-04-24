@@ -20,13 +20,15 @@ public class LevelManager : MonoBehaviour
     public static PoolMono<Unit> _pool;
     public PoolMono<Unit> pool => _pool;
 
+    public int unitLoopBonus;
+
     public void Init(GameManager gameManager) {
         _gameManager = gameManager;
         _gameManager.OnStartLevel.AddListener(ClearPool);
 
         foreach (var myBase in _bases)
         {
-            myBase.Init(this);
+            myBase.Init(this, gameManager.saveData.loop);
         }
 
         foreach (var player in _players)

@@ -50,7 +50,6 @@ public class Player : PlayerCore
                     {
                         if (myBase.data == _data)
                         {
-                            if (levelManager.gameManager.IsTutorialToStart()) levelManager.gameManager.StartGamePlaying();
                             myBase.SendUnits(_targetBase.gameObject);
                         }
                     }

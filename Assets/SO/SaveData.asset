@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _level: 1
   loop: 1
+  soundVolume: 1
+  musicVolume: 1

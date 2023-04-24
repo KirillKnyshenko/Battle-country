@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(GameManagerUpdate());
 
-        //DOTween.Init(true, true, LogBehaviour.ErrorsOnly);
+        Application.targetFrameRate = 60;
     }
 
     private IEnumerator GameManagerUpdate() {
@@ -81,15 +81,23 @@ public class GameManager : MonoBehaviour
                     
                 break;
                 case State.GamePlaying:        
-                    if (levelManager.players[0].playerMass <= 0f)
+                    if (levelManager.players[0].playerMass <= 0f && levelManager.players[0].bases.Count <= 0)
                         Lose();
 
                     float enemyMass = 0f;
+
                     for (int i = 1; i < levelManager.players.Count; i++)
                     {
                         enemyMass += levelManager.players[i].playerMass;
                     }
-                    if (enemyMass == 0f)
+
+                    int enemyBases = 0;
+                    for (int i = 1; i < levelManager.players.Count; i++)
+                    {
+                        enemyBases += levelManager.players[i].bases.Count;
+                    }
+
+                    if (enemyMass == 0f && enemyBases == 0)
                         Win();
                 break;
                 case State.GameOver:

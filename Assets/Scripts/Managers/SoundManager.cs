@@ -70,7 +70,7 @@ public class SoundManager : MonoBehaviour
         {
             _isSound = true;
             
-            _soundVolume = 1f;
+            _soundVolume = .5f;
 
             _gameManager.saveData.SetAudioData(_isMusic, _isSound);
 

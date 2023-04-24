@@ -58,8 +58,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _poolCount: 200
+  _autoExpand: 1
   _unitPrefab: {fileID: 7767937080280710350, guid: 6a51cd539b471344c9d899bfdd80365c, type: 3}
   _poolContainer: {fileID: 6556409672979818100}
+  unitLoopBonus: 5
 --- !u!1001 &3201578646128733855
 PrefabInstance:
   m_ObjectHideFlags: 0

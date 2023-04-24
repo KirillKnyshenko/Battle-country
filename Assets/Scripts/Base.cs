@@ -16,10 +16,10 @@ public class Base : MonoBehaviour
     [SerializeField] private BaseVisual _baseVisual;
     public BaseVisual baseVisual => _baseVisual;
     
-    [SerializeField] private float _mass;
-    public float mass => _mass;
-    [SerializeField] private float _massMax;
-    public float massMax => _massMax;
+    [SerializeField] private int _mass;
+    public int mass => _mass;
+    [SerializeField] private int _massMax;
+    public int massMax => _massMax;
 
     [SerializeField] private AnimationCurve _spawnSpeedCurve;
     [SerializeField] private float[] _angles;
@@ -37,25 +37,37 @@ public class Base : MonoBehaviour
     public static UnityEvent OnAnyUnitTaken;
     public UnityEvent OnOwnerChanged;
 
-    private IEnumerator baseAction;
+    private IEnumerator _sendUnits;
+    private IEnumerator _spawnUnits;
 
-    public void Init(LevelManager levelManager) {
+    public void Init(LevelManager levelManager, int loop) {
         _levelManager = levelManager;
         
+        CalculateMass(loop);
+
         if (_playerCore != null) SetOwner(_playerCore);
 
         _baseVisual.Init();
         OnMassUpdate?.Invoke();
-        
+
+        _spawnUnits = SpawnUnits();
+
         _levelManager.gameManager.OnGameStarted.AddListener( () => {
-            StopAllCoroutines();  
-            baseAction = SpawnUnits();
-         
-            StartCoroutine(baseAction);
+            StartCoroutine(_spawnUnits);
         });
     }
 
+    private void CalculateMass(int loop) {
+        if (loop > 0)
+        {
+            AddMass(levelManager.unitLoopBonus * loop);
+            _massMax += levelManager.unitLoopBonus * loop;
+        }
+    }
+
     private IEnumerator SpawnUnits() {
+        _isSpawnCooldown = true;
+        
         while (true)
         {
             if (_isSpawnCooldown)
@@ -63,10 +75,10 @@ public class Base : MonoBehaviour
                 yield return new WaitForSeconds(_spawnCooldown);
                 _isSpawnCooldown = false;
             }
-
-            if (_mass < _massMax) 
+            
+            if (_mass < _massMax && _sendUnits == null) 
             {
-                AddMass(1f);
+                AddMass(1);
 
                 yield return new WaitForSeconds(_spawnSpeedCurve.Evaluate(_mass/_massMax));
             }
@@ -78,8 +90,6 @@ public class Base : MonoBehaviour
     private void SetOwner(PlayerCore playerCore) {
         if (_playerCore != null) _playerCore.RemoveBase(this);
 
-        StopAllCoroutines();  
-
         _playerCore = playerCore;
 
         if (_playerCore != null)
@@ -88,19 +98,12 @@ public class Base : MonoBehaviour
 
             _playerCore.AddBase(this);
 
-            OnMassUpdate?.Invoke();
             OnOwnerChanged?.Invoke();
         }
         else
         {
             Debug.LogError("PlayerCore was not found");
         }
-        
-        if (!levelManager.gameManager.IsGamePlaying()) return;
-
-        baseAction = SpawnUnits();      
-        StartCoroutine(baseAction);
-        _isSpawnCooldown = true;
     }
 
     public void SendUnits(GameObject target) {
@@ -108,22 +111,26 @@ public class Base : MonoBehaviour
 
         StopAllCoroutines();
 
-        baseAction = GenerateUnits(target);      
-        StartCoroutine(baseAction);
+        _sendUnits = GenerateUnits(target);      
+        StartCoroutine(_sendUnits);
+
+        if (levelManager.gameManager.IsTutorialToStart()) 
+            levelManager.gameManager.StartGamePlaying();
     }
 
     public IEnumerator GenerateUnits(GameObject target) {
-        float unitsMass = _mass;
-        float maxUnitsPerBatch = _angles.Length;
+        int unitsMass = _mass;
+        int maxUnitsPerBatch = _angles.Length;
         
         while (unitsMass > 0f)
         {
+            _isSpawnCooldown = true;
             if (unitsMass > _mass)
             {
                 unitsMass = _mass;
             }
 
-            float unitToGanerate = Mathf.Min(maxUnitsPerBatch, unitsMass);
+            int unitToGanerate = Mathf.Min(maxUnitsPerBatch, unitsMass);
 
             for (int i = 0; i < unitToGanerate; i++)
             {
@@ -131,29 +138,29 @@ public class Base : MonoBehaviour
 
                 unitSkript.SetTarget(target, this, _angles[i]);
 
-                RemoveMass(1f);
+                RemoveMass(1);
                 unitsMass--;
             }
 
             yield return new WaitForSeconds(_spawnUnitsBatchDelay);
         }
 
-        baseAction = SpawnUnits();
-        _isSpawnCooldown = true;
-        StartCoroutine(baseAction);
+        _sendUnits = null;
+        _spawnUnits = SpawnUnits();
+        StartCoroutine(_spawnUnits);
 
         yield return null;
     }
 
-    private void AddMass(float massToAdd) {
+    private void AddMass(int massToAdd) {
         _mass = _mass + massToAdd;
 
         OnMassUpdate?.Invoke();
     }
 
-    private void RemoveMass(float massToRemove) {
+    private void RemoveMass(int massToRemove) {
         _mass = _mass - massToRemove;
-
+        _isSpawnCooldown = true;
         OnMassUpdate?.Invoke();
     }
 
@@ -167,19 +174,24 @@ public class Base : MonoBehaviour
 
                 if (unit.playerCore == _playerCore)
                 {
-                    AddMass(1f);
+                    AddMass(1);
+                    _isSpawnCooldown = true;
                 }
                 else
                 {
-                    if (_mass == 0f)
+                    if (_mass == 0)
                     {
                         // Change base owner
+                        StopAllCoroutines();
                         SetOwner(unit.playerCore);
+
+                        _sendUnits = null;
+                        _spawnUnits = SpawnUnits();
+                        StartCoroutine(_spawnUnits);
                     } 
                     else
                     {
-                        RemoveMass(1f);
-                        _isSpawnCooldown = true;
+                        RemoveMass(1);
                     }
 
                 }

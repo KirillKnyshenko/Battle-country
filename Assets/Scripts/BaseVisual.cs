@@ -27,18 +27,17 @@ public class BaseVisual : MonoBehaviour
         _base.OnUnselected.AddListener(HideSelection);
 
         _base.OnMassUpdate.AddListener(UpdateVisual);
-        _base.OnMassUpdate.AddListener(ChangeFieldColor);
 
         _base.OnUnitTaken.AddListener(BasePopup);
 
         _base.OnOwnerChanged.AddListener(SetOwnerVisual);
         _base.OnOwnerChanged.AddListener(ClearLine);
-        _base.OnOwnerChanged.AddListener(ChangeFieldColor);
 
         SetOwnerVisual();
         ClearLine();
         HideSelection();
         UpdateVisual();
+        StartCoroutine(ChangingFieldColor());
     }
 
     private void SetOwnerVisual() {
@@ -68,27 +67,15 @@ public class BaseVisual : MonoBehaviour
         }
     }
 
-    private void ChangeFieldColor() {
-        float colorCombining = _base.mass / _base.massMax;
-
-        if (_base.data != null)
+    private IEnumerator ChangingFieldColor() {
+        while (true)
         {
-            StopAllCoroutines();
+            float colorCombining = _base.mass / (float)_base.massMax;
             Color fieldColor = _base.data.fieldColor.Evaluate(colorCombining);
-
-            StartCoroutine(ChangingFieldColor(fieldColor));
-        }
-    }
-
-    private IEnumerator ChangingFieldColor(Color finishColor) {
-        while (_fieldSpriteRenderer.color != finishColor)
-        {
-            _fieldSpriteRenderer.color = Color.Lerp(_fieldSpriteRenderer.color, finishColor, Time.deltaTime * _colorSpeed);
+            _fieldSpriteRenderer.color = Color.Lerp(_fieldSpriteRenderer.color, fieldColor, Time.deltaTime * _colorSpeed);
 
             yield return null;
         }   
-
-        yield return null; 
     }
 
     private void DrawLine(Vector2 targetPosition) {
