@@ -60,8 +60,20 @@ public class Base : MonoBehaviour
     private void CalculateMass(int loop) {
         if (loop > 0)
         {
-            AddMass(levelManager.unitLoopBonus * loop);
-            _massMax += levelManager.unitLoopBonus * loop;
+            int bonus = 0;
+            if (_playerCore != null)
+            {
+                bonus = levelManager.unitLoopBonus * loop;
+            }
+            else
+            {
+                bonus =  Mathf.FloorToInt(levelManager.unitLoopBonus * loop * .7f);
+            }
+
+            AddMass(bonus);
+
+            int maxMassBonus = Mathf.FloorToInt(bonus * .8f);
+            _massMax += maxMassBonus;
         }
     }
 
