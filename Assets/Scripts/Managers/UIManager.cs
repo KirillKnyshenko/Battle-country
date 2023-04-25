@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
@@ -26,14 +27,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float _winUISpeed;
     [SerializeField] private Image _winBackground;
     [SerializeField] private Transform _winLabelTF;
-    [SerializeField] private Transform _winButtonTF;
+    [SerializeField] private Button _winButton;
     [SerializeField] private Transform _winAreaTF;
 
     [SerializeField] private GameObject _loseUI;
     [SerializeField] private float _loseUISpeed;
     [SerializeField] private Image _loseBackground;
     [SerializeField] private Transform _loseLabelTF;
-    [SerializeField] private Transform _loseButtonTF;
+    [SerializeField] private Button _loseButton;
 
     [SerializeField] private Transform _ButtonTargetTF;
     [SerializeField] private Animator _winUIAnimator;
@@ -42,6 +43,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _soundText;
     [SerializeField] private GameObject _musicLine;
     [SerializeField] private TextMeshProUGUI _musicText;
+
+    public UnityEvent OnClick;
 
     public void Init(GameManager gameManager, int level) {
         _gameManager = gameManager;
@@ -103,7 +106,10 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
     }
+    
     public void HideTapToStart() {
+        OnClick?.Invoke();
+
         _tapToStartBacground.DOFade(0f, _timeToHide).onComplete += () => {
             _tapToStartBacground.gameObject.SetActive(false);
         };
@@ -121,7 +127,8 @@ public class UIManager : MonoBehaviour
         _winLabelTF.localScale = Vector3.zero;
         _winLabelTF.DOScale(Vector3.one, _loseUISpeed).SetLink(_winLabelTF.gameObject);
 
-        _winButtonTF.DOLocalMove(_ButtonTargetTF.localPosition, _loseUISpeed).SetLink(_winButtonTF.gameObject);
+        _winButton.onClick.AddListener(() => { OnClick?.Invoke(); });
+        _winButton.transform.DOLocalMove(_ButtonTargetTF.localPosition, _loseUISpeed).SetLink(_winButton.gameObject);
 
         _winAreaTF.DOLocalRotate(new Vector3(0, 0, 360), 10f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart).SetLink(_winAreaTF.gameObject);
         _winUIAnimator.SetTrigger(IS_WIN);
@@ -136,27 +143,37 @@ public class UIManager : MonoBehaviour
 
         _loseLabelTF.DOShakeScale(_loseUISpeed, 0.5f).SetLink(_loseLabelTF.gameObject);
 
-        _loseButtonTF.DOLocalMove(_ButtonTargetTF.localPosition, _loseUISpeed).SetLink(_loseLabelTF.gameObject);
+        _loseButton.onClick.AddListener(() => { OnClick?.Invoke(); });
+        _loseButton.transform.DOLocalMove(_ButtonTargetTF.localPosition, _loseUISpeed).SetLink(_loseLabelTF.gameObject);
     }
 
     public void ShowSettings() {
+        OnClick?.Invoke();
         _settingsPanel.SetActive(true);
         UpdateSoundVisual();
         UpdateMusicVisual();
     }
 
     public void HideSettings() {
+        OnClick?.Invoke();
         _settingsPanel.SetActive(false);
     }
 
     public void ToggleSound() {
         gameManager.soundManager.ToggleSound();
         UpdateSoundVisual();
+        OnClick?.Invoke();
     }
 
     public void ToggleMusic() {
         gameManager.soundManager.ToggleMusic();
         UpdateMusicVisual();
+        OnClick?.Invoke();
+    }
+
+    public void RestartLevel() {
+        OnClick?.Invoke();
+        gameManager.RestartLevel();
     }
 
     private void UpdateMusicVisual() {

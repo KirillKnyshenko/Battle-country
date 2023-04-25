@@ -19,6 +19,8 @@ public class SoundManager : MonoBehaviour
 
         _gameManager.OnWin.AddListener(WinSound);
         _gameManager.OnLose.AddListener(LoseSound);
+        _gameManager.UIManager.OnClick.AddListener(ClickSound);
+
 
         _isSound = _gameManager.saveData.soundVolume;
         _soundVolume = _isSound ? .5f : 0f;
@@ -46,6 +48,9 @@ public class SoundManager : MonoBehaviour
         AudioPlay(_audioClipRefsSO.unitTaken, Camera.main.transform.position, _soundVolume);
     }
 
+    private void ClickSound() {
+        AudioPlay(_audioClipRefsSO.click, Camera.main.transform.position, _soundVolume);
+    }
 
     private void AudioPlay(AudioClip[] audioClip, Vector3 pos, float volume = .5f) {
         AudioSource.PlayClipAtPoint(audioClip[Random.Range(0, audioClip.Length)], pos, volume);

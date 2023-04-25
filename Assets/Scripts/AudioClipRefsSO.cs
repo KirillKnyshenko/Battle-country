@@ -8,4 +8,5 @@ public class AudioClipRefsSO : ScriptableObject
     public AudioClip[] win;
     public AudioClip[] lose;
     public AudioClip[] unitTaken;
+    public AudioClip click;
 }

@@ -24,3 +24,4 @@ MonoBehaviour:
   unitTaken:
   - {fileID: 8300000, guid: 397539bbda21ab5419d3a0bfceb76119, type: 3}
   - {fileID: 8300000, guid: 20020f9719d18c5429dc8a93320d526d, type: 3}
+  click: {fileID: 8300000, guid: ee674765a4d7a9a439ef88d6bbf22079, type: 3}
