@@ -1,5 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4773636699053757682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3594740084073941229}
+  - component: {fileID: 2906275423820601764}
+  m_Layer: 0
+  m_Name: AdsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3594740084073941229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4773636699053757682}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5136160404960565402}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2906275423820601764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4773636699053757682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 032d7f1105b9521478a19dad6c8607fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _androidGameId: 5258380
+  _iOSGameId: 5258381
+  _testMode: 1
+  _androidAdUnitId: Banner_Android
+  _iOSAdUnitId: Banner_iOS
 --- !u!1 &5136160403636907259
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,6 +231,7 @@ Transform:
   - {fileID: 5136160403457152831}
   - {fileID: 5136160403636907204}
   - {fileID: 5136160403959129943}
+  - {fileID: 3594740084073941229}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -198,6 +247,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5136160403937090985}
     - target: {fileID: 5815166683361085764, guid: fe2bc73a628de6e40875e8d6df4a75d1, type: 3}
+      propertyPath: _BannerAd
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815166683361085764, guid: fe2bc73a628de6e40875e8d6df4a75d1, type: 3}
       propertyPath: _UIManager
       value: 
       objectReference: {fileID: 4073436940045414316}
@@ -205,6 +258,10 @@ PrefabInstance:
       propertyPath: _levelManager
       value: 
       objectReference: {fileID: 3998161019880174667}
+    - target: {fileID: 5815166683361085764, guid: fe2bc73a628de6e40875e8d6df4a75d1, type: 3}
+      propertyPath: _adsInitializer
+      value: 
+      objectReference: {fileID: 2906275423820601764}
     - target: {fileID: 5815166683361085765, guid: fe2bc73a628de6e40875e8d6df4a75d1, type: 3}
       propertyPath: m_Name
       value: Manager
@@ -550,6 +607,10 @@ PrefabInstance:
     - target: {fileID: 9205515951693710679, guid: 5c71018623e14ae408a7724d0a3b9fba, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 9205515951693710679, guid: 5c71018623e14ae408a7724d0a3b9fba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c71018623e14ae408a7724d0a3b9fba, type: 3}

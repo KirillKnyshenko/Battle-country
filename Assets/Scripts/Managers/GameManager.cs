@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     public SaveDataSO saveData => _saveData;
     [SerializeField] private LevelListSO _levelListSO;
     
+    [SerializeField] private AdsInitializer _adsInitializer;
+
     public UnityEvent OnStartLevel;
     public UnityEvent OnTapToStart;
     public UnityEvent OnTutorialToStart;
@@ -41,6 +43,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _state = State.TapToStart;
+        OnTapToStart?.Invoke();
+
         _levelManager.Init(this);
 
         int currentLevel = _saveData.level + (_levelListSO.levels.Count * (_saveData.loop - 1));
@@ -52,6 +56,8 @@ public class GameManager : MonoBehaviour
         _soundManager.Init(this);
 
         StartCoroutine(GameManagerUpdate());
+
+        _adsInitializer.InitializeAds();
 
         Application.targetFrameRate = 60;
     }
