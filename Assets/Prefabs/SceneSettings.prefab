@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3594740084073941229}
   - component: {fileID: 2906275423820601764}
+  - component: {fileID: 2376126595333509545}
   m_Layer: 0
   m_Name: AdsManager
   m_TagString: Untagged
@@ -46,6 +47,19 @@ MonoBehaviour:
   _androidGameId: 5258380
   _iOSGameId: 5258381
   _testMode: 1
+--- !u!114 &2376126595333509545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4773636699053757682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 293e9fa3245685d46b37fa5faba53dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bannerPosition: 4
   _androidAdUnitId: Banner_Android
   _iOSAdUnitId: Banner_iOS
 --- !u!1 &5136160403636907259
@@ -250,6 +264,10 @@ PrefabInstance:
       propertyPath: _BannerAd
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5815166683361085764, guid: fe2bc73a628de6e40875e8d6df4a75d1, type: 3}
+      propertyPath: _bannerAd
+      value: 
+      objectReference: {fileID: 2376126595333509545}
     - target: {fileID: 5815166683361085764, guid: fe2bc73a628de6e40875e8d6df4a75d1, type: 3}
       propertyPath: _UIManager
       value: 

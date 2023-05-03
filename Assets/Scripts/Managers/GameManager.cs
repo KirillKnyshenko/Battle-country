@@ -31,12 +31,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelListSO _levelListSO;
     
     [SerializeField] private AdsInitializer _adsInitializer;
-
+    [SerializeField] private BannerAd _bannerAd;
+    
     public UnityEvent OnStartLevel;
     public UnityEvent OnTapToStart;
     public UnityEvent OnTutorialToStart;
     public UnityEvent OnGameStarted;
-    public UnityEvent OnGameOver;
     public UnityEvent OnWin;
     public UnityEvent OnLose;
 
@@ -58,7 +58,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameManagerUpdate());
 
         _adsInitializer.InitializeAds();
-
+        _bannerAd.LoadBanner();
+        
         Application.targetFrameRate = 60;
     }
 
