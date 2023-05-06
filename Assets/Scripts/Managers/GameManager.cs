@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using UnityEngine.Advertisements;
+
 public class GameManager : MonoBehaviour
 {
     private enum State {
@@ -29,10 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SaveDataSO _saveData;
     public SaveDataSO saveData => _saveData;
     [SerializeField] private LevelListSO _levelListSO;
-    
-    [SerializeField] private AdsInitializer _adsInitializer;
-    [SerializeField] private BannerAd _bannerAd;
-    
+
     public UnityEvent OnStartLevel;
     public UnityEvent OnTapToStart;
     public UnityEvent OnTutorialToStart;
@@ -56,10 +55,8 @@ public class GameManager : MonoBehaviour
         _soundManager.Init(this);
 
         StartCoroutine(GameManagerUpdate());
-
-        _adsInitializer.InitializeAds();
-        _bannerAd.LoadBanner();
         
+
         Application.targetFrameRate = 60;
     }
 
