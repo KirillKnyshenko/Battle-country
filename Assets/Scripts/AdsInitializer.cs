@@ -3,7 +3,7 @@ using UnityEngine.Advertisements;
  
 public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 {
-    [SerializeField] private BannerAd _bannerAd;
+    //[SerializeField] private BannerAd _bannerAd;
     private string _gameId = "5258380";
     
     void Awake()
@@ -19,7 +19,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
         }
         else
         {
-            _bannerAd.LoadBanner();
+            //_bannerAd.LoadBanner();
         }
     }
 
@@ -27,12 +27,13 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
     public void OnInitializationComplete()
     {
         Debug.Log("Unity Ads initialization complete.");
-        _bannerAd.LoadBanner();
-        
+        //_bannerAd.LoadBanner();
     }
  
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
         Debug.Log($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
     }
+    
+    
 }

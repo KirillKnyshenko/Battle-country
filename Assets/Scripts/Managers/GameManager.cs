@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     public SaveDataSO saveData => _saveData;
     [SerializeField] private LevelListSO _levelListSO;
 
+    [SerializeField] private InterstitialAd _interstitialAd;
+    
     public UnityEvent OnStartLevel;
     public UnityEvent OnTapToStart;
     public UnityEvent OnTutorialToStart;
@@ -147,7 +149,9 @@ public class GameManager : MonoBehaviour
         OnGameStarted?.Invoke();
     }
 
-    public void LoadCurrentLevel() {
+    public void LoadCurrentLevel()
+    {
+        _interstitialAd.StartAd();
         SceneManager.LoadScene(_levelListSO.GetCurrentLevelName());
     }
 

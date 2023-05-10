@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour
     public void HideTapToStart() {
         OnClick?.Invoke();
 
-        _tapToStartBacground.DOFade(0f, _timeToHide).onComplete += () => {
+        _tapToStartBacground.DOFade(0f, _timeToHide).SetLink(_tapToStartBacground.gameObject).onComplete += () => {
             _tapToStartBacground.gameObject.SetActive(false);
         };
 
