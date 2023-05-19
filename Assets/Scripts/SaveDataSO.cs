@@ -11,8 +11,17 @@ public class SaveDataSO : ScriptableObject
     public bool soundVolume = true;
     public bool musicVolume = true;
 
-    public void Save() {
-        var data = JsonUtility.ToJson(this);
+    public void Save()
+    {
+        string data;
+        if (File.Exists(BuildPath("Save.JSON"))){
+            data = JsonUtility.ToJson(this);
+        }
+        else
+        {
+            data = JsonUtility.ToJson(ScriptableObject.CreateInstance<SaveDataSO>());
+        }
+
         File.WriteAllText(BuildPath("Save.JSON"), data);
     }
 
