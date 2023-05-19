@@ -14,14 +14,12 @@ public class SaveDataSO : ScriptableObject
     public void Save()
     {
         string data;
-        if (File.Exists(BuildPath("Save.JSON"))){
-            data = JsonUtility.ToJson(this);
-        }
-        else
-        {
+        if (!File.Exists(BuildPath("Save.JSON"))){
             data = JsonUtility.ToJson(ScriptableObject.CreateInstance<SaveDataSO>());
+            JsonUtility.FromJsonOverwrite(data, this);
         }
 
+        data = JsonUtility.ToJson(this);
         File.WriteAllText(BuildPath("Save.JSON"), data);
     }
 
